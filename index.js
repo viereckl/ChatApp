@@ -6,9 +6,21 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
+var allClients = [];
 io.on('connection', (socket) => {
-    socket.on('chat message', (msg) => {
-      io.emit('chat message', msg);
+    allClients.push(socket);
+
+    socket.on('chat message', (msg, uName) => {
+      io.emit('chat message', msg, uName);
+    });
+    socket.on('login', (uName) => {
+      console.log(uName + ' logged in');
+      console.log(socket.id);
+    });
+    socket.on('disconnect', () => {
+      console.log(' disconnected');
+      var i  = allClients.indexOf(socket.id);
+      allClients.splice(i,1);
     });
 }); 
 
