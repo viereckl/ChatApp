@@ -11,7 +11,8 @@ io.on('connection', (socket) => {
     allClients.push(socket);
 
     socket.on('chat message', (msg, uName) => {
-      io.emit('chat message', msg, uName);
+      //io.emit('chat message', msg, uName); //sending to all clients, include sender
+      socket.broadcast.emit('chat message', msg, uName); //sending to all clients except sender
     });
     socket.on('login', (uName) => {
       console.log(uName + ' logged in');
