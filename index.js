@@ -7,28 +7,31 @@ app.get('/', (req, res) => {
 });
 
 var conClients = new Set();
-var uNames = new Set();
 io.on('connection', (socket) => {
-    conClients.add(socket);
-
     socket.on('chat message', (msg, uName) => {
       //io.emit('chat message', msg, uName); //sending to all clients, include sender
       socket.broadcast.emit('chat message', msg, uName); //sending to all clients except sender
     });
     socket.on('login', (uName) => {
       let check = false
-      if(uNames.has(uName)){
-        check = true;
-      }else{
-        uNames.add(uName);
+      conClients.forEach((user) => {
+        if (user.un === uName) {
+          check = true;
+        }
+      });
+      if(check === false){
         console.log(uName + ' logged in');
-        console.log(socket.id);
+        conClients.add({id: socket.id, un: uName});
       }
-      socket.broadcast.to(socket.id).emit('checkLogin',check)
+      socket.emit('checkLogin',check)
     });
     socket.on('disconnect', () => {
-      console.log(' disconnected');
-      conClients.delete(socket);
+      conClients.forEach((user) => {
+        if (user.id === socket.id) {
+          console.log(user.un + ' disconnected!');
+          conClients.delete(user);
+        }
+      });
     });
 }); 
 

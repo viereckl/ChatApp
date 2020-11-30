@@ -39,7 +39,7 @@
       })
       socket.on('checkLogin', function(check){
         if(check === true){
-          window.alert("Der Benutzername ist schon vergeben!")
+          window.alert("Der Benutzername ist schon vergeben!") //hübscheres Design
         }else{
           document.getElementById('login').style.display = 'none';
           document.getElementById('msg').style.display = 'block';
