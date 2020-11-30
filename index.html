@@ -60,6 +60,20 @@
       socket.on('login message', function(text){
         $('#messages').append($('<li class="bold">').text(text));
       })
+      socket.on('init msg',function(messages){
+        for(let i = 0; messages.length; i++){
+          msg = messages[i]
+          if(msg.username === 'System'){
+            $('#messages').append($('<li class="bold">').text(msg.message));
+            document.getElementById('messages').lastChild.style.textAlign = 'center';
+          }else{
+            $('#messages').append($('<li>').text(msg.username + ': ' + msg.message));
+            if($('#un').val() === msg.username){
+              document.getElementById('messages').lastChild.style.textAlign = 'right';
+            }
+          }
+        }
+      })
     }); 
 </script>
 
