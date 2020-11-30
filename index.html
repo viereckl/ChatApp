@@ -13,6 +13,7 @@
       #messages { list-style-type: none; margin: 0; padding: 0;}
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
+      .bold {font-weight: bold}
     </style>
   </head>
   <body>
@@ -56,6 +57,9 @@
       socket.on('chat message', function(msg, uName){
         $('#messages').append($('<li>').text(uName + ': ' + msg));
       });
+      socket.on('login message', function(text){
+        $('#messages').append($('<li class="bold">').text(text));
+      })
     }); 
 </script>
 

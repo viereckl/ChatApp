@@ -1,6 +1,7 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+var fs = require('fs');
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -21,6 +22,7 @@ io.on('connection', (socket) => {
       });
       if(check === false){
         console.log(uName + ' logged in');
+        socket.broadcast.emit('login message',uName + ' logged in')
         conClients.add({id: socket.id, un: uName});
       }
       socket.emit('checkLogin',check)
@@ -29,6 +31,7 @@ io.on('connection', (socket) => {
       conClients.forEach((user) => {
         if (user.id === socket.id) {
           console.log(user.un + ' disconnected!');
+          socket.broadcast.emit('login message',user.un + ' logged out')
           conClients.delete(user);
         }
       });
@@ -38,4 +41,18 @@ io.on('connection', (socket) => {
 http.listen(3033, () => {
   console.log('listening on *:3033');
 });
+
+function getChat(){
+  readstream = fs.createReadStream('test.txt');
+
+}
+
+function saveChat(data){
+  let jsonData = JSON.stringify(data);
+  fs.writeFile('test.txt',jsonData,function(err){
+    if(err){
+      console.log(err);
+    }
+  })
+}
 
