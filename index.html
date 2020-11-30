@@ -34,10 +34,16 @@
     $(function () {
       var socket = io();
       $('#login').submit(function(e){
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('msg').style.display = 'block';
         socket.emit('login',$('#un').val());
         return false;
+      })
+      socket.on('checkLogin', function(check){
+        if(check === true){
+          window.alert("Der Benutzername ist schon vergeben!")
+        }else{
+          document.getElementById('login').style.display = 'none';
+          document.getElementById('msg').style.display = 'block';
+        }
       })
       $('#msg').submit(function(e){
         e.preventDefault(); // prevents page reloading

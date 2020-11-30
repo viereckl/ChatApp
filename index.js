@@ -6,22 +6,29 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-var allClients = [];
+var conClients = new Set();
+var uNames = new Set();
 io.on('connection', (socket) => {
-    allClients.push(socket);
+    conClients.add(socket);
 
     socket.on('chat message', (msg, uName) => {
       //io.emit('chat message', msg, uName); //sending to all clients, include sender
       socket.broadcast.emit('chat message', msg, uName); //sending to all clients except sender
     });
     socket.on('login', (uName) => {
-      console.log(uName + ' logged in');
-      console.log(socket.id);
+      let check = false
+      if(uNames.has(uName)){
+        check = true;
+      }else{
+        uNames.add(uName);
+        console.log(uName + ' logged in');
+        console.log(socket.id);
+      }
+      socket.broadcast.to(socket.id).emit('checkLogin',check)
     });
     socket.on('disconnect', () => {
       console.log(' disconnected');
-      var i  = allClients.indexOf(socket.id);
-      allClients.splice(i,1);
+      conClients.delete(socket);
     });
 }); 
 
