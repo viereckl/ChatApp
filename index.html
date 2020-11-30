@@ -44,6 +44,8 @@
         }else{
           document.getElementById('login').style.display = 'none';
           document.getElementById('msg').style.display = 'block';
+          $('#messages').append($('<li class="bold">').text($('#un').val() + ' logged in'));
+          document.getElementById('messages').lastChild.style.textAlign = 'center';
         }
       })
       $('#msg').submit(function(e){
