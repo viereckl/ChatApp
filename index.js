@@ -43,19 +43,22 @@ io.on('connection', (socket) => {
       }
       socket.emit('checkLogin',check)
     });
-    socket.on('disconnect', () => {
-      let logoutStr = '';
-      conClients.forEach((user) => {
-        if (user.id === socket.id) {
-          logoutStr = user.un + ' logged out!'
-          console.log(logoutStr);
-          socket.broadcast.emit('login message',logoutStr)
-          addMsg('System',logoutStr)
-          conClients.delete(user);
-        }
-      });
-    });
+    socket.on('disconnect', () => closeCon(socket.id));
+    socket.on('error', () => closeCon(socket.id));
 }); 
+
+function closeCon(socketId){
+  let logoutStr = '';
+  return conClients.forEach((user) => {
+    if (user.id === socketId) {
+      logoutStr = user.un + ' logged out!'
+      console.log(logoutStr);
+      socket.broadcast.emit('login message',logoutStr)
+      addMsg('System',logoutStr)
+      conClients.delete(user);
+    }
+  });
+}
 
 http.listen(3033, () => {
   console.log('listening on *:3033');
