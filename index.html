@@ -59,6 +59,7 @@
       });
       socket.on('login message', function(text){
         $('#messages').append($('<li class="bold">').text(text));
+        document.getElementById('messages').lastChild.style.textAlign = 'center';
       })
       socket.on('init msg',function(messages){
         for(let i = 0; messages.length; i++){
