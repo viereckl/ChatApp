@@ -25,13 +25,13 @@ io.on('connection', (socket) => {
       }
       socket.emit('checkLogin',check)
     });
-    socket.on('disconnect', closeCon());
-    socket.on('error', closeCon());
+    socket.on('disconnect', () => closeCon(socket.id));
+    socket.on('error', () => closeCon(socket.id));
 }); 
 
-function closeCon(){
+function closeCon(socketId){
   return conClients.forEach((user) => {
-    if (user.id === socket.id) {
+    if (user.id === socketId) {
       console.log(user.un + ' disconnected!');
       conClients.delete(user);
     }
