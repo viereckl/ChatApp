@@ -6,24 +6,36 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-var allClients = [];
+var conClients = new Set();
 io.on('connection', (socket) => {
-    allClients.push(socket);
-
     socket.on('chat message', (msg, uName) => {
-      io.emit('chat message', msg, uName);
+      //io.emit('chat message', msg, uName); //sending to all clients, include sender
+      socket.broadcast.emit('chat message', msg, uName); //sending to all clients except sender
     });
     socket.on('login', (uName) => {
-      console.log(uName + ' logged in');
-      console.log(socket.id);
+      let check = false
+      conClients.forEach((user) => {
+        if (user.un === uName) {
+          check = true;
+        }
+      });
+      if(check === false){
+        console.log(uName + ' logged in');
+        conClients.add({id: socket.id, un: uName});
+      }
+      socket.emit('checkLogin',check)
     });
     socket.on('disconnect', () => {
-      console.log(' disconnected');
-      var i  = allClients.indexOf(socket.id);
-      allClients.splice(i,1);
+      conClients.forEach((user) => {
+        if (user.id === socket.id) {
+          console.log(user.un + ' disconnected!');
+          conClients.delete(user);
+        }
+      });
     });
 }); 
 
 http.listen(3033, () => {
   console.log('listening on *:3033');
 });
+
