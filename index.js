@@ -25,15 +25,18 @@ io.on('connection', (socket) => {
       }
       socket.emit('checkLogin',check)
     });
-    socket.on('disconnect', () => {
-      conClients.forEach((user) => {
-        if (user.id === socket.id) {
-          console.log(user.un + ' disconnected!');
-          conClients.delete(user);
-        }
-      });
-    });
+    socket.on('disconnect', closeCon());
+    socket.on('error', closeCon());
 }); 
+
+function closeCon(){
+  return conClients.forEach((user) => {
+    if (user.id === socket.id) {
+      console.log(user.un + ' disconnected!');
+      conClients.delete(user);
+    }
+  });
+}
 
 http.listen(3033, () => {
   console.log('listening on *:3033');
