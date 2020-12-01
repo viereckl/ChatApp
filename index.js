@@ -40,6 +40,7 @@ io.on('connection', (socket) => {
         socket.emit('init msg',messages)
         addMsg('System',loginStr)
         conClients.add({id: socket.id, un: uName});
+        socket.broadcast.emit('onlineUser',conClients); //Übergabe der angemeldeten Benutzer
       }
       socket.emit('checkLogin',check)
     });
@@ -56,6 +57,7 @@ function closeCon(socketId){
       socket.broadcast.emit('login message',logoutStr)
       addMsg('System',logoutStr)
       conClients.delete(user);
+      socket.broadcast.emit('onlineUser',conClients); //Übergabe der angemeldeten Benutzer
     }
   });
 }
