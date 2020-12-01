@@ -40,22 +40,26 @@ io.on('connection', (socket) => {
         socket.emit('init msg',messages)
         addMsg('System',loginStr)
         conClients.add({id: socket.id, un: uName});
+        let conClientsArr = Array.from(conClients);
+        socket.broadcast.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
       }
       socket.emit('checkLogin',check)
     });
-    socket.on('disconnect', () => closeCon(socket.id));
-    socket.on('error', () => closeCon(socket.id));
+    socket.on('disconnect', () => closeCon(socket));
+    socket.on('error', () => closeCon(socket));
 }); 
 
-function closeCon(socketId){
+function closeCon(socket){
   let logoutStr = '';
   return conClients.forEach((user) => {
-    if (user.id === socketId) {
+    if (user.id === socket.id) {
       logoutStr = user.un + ' logged out!'
       console.log(logoutStr);
       socket.broadcast.emit('login message',logoutStr)
       addMsg('System',logoutStr)
       conClients.delete(user);
+      let conClientsArr = Array.from(conClients);
+      socket.broadcast.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
     }
   });
 }
