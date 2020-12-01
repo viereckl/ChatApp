@@ -1,20 +1,8 @@
 <!doctype html>
 <html lang="DE">
   <head>
-    <title>Socket.IO chat2</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%; }
-      #login{position: relative;}
-      #msg{display: none;}
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0;}
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-      .bold {font-weight: bold}
-    </style>
+    <title>Socket.IO</title>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <form action="" id="login">
@@ -30,56 +18,4 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
-<script>
-    $(function () {
-      var socket = io();
-      $('#login').submit(function(e){
-        socket.emit('login',$('#un').val());
-        return false;
-      })
-      socket.on('checkLogin', function(check){
-        if(check === true){
-          window.alert("Der Benutzername ist schon vergeben!") //hübscheres Design
-        }else{
-          document.getElementById('login').style.display = 'none';
-          document.getElementById('msg').style.display = 'block';
-          $('#messages').append($('<li class="bold">').text($('#un').val() + ' logged in'));
-          document.getElementById('messages').lastChild.style.textAlign = 'center';
-        }
-      })
-      $('#msg').submit(function(e){
-        e.preventDefault(); // prevents page reloading
-        socket.emit('chat message', $('#m').val(), $('#un').val());
-        $('#messages').append($('<li>').text('me: ' + $('#m').val()));
-        document.getElementById('messages').lastChild.style.textAlign = 'right';
-        $('#m').val('');
-        return false;
-      });
-      socket.on('chat message', function(msg, uName){
-        $('#messages').append($('<li>').text(uName + ': ' + msg));
-      });
-      socket.on('login message', function(text){
-        $('#messages').append($('<li class="bold">').text(text));
-        document.getElementById('messages').lastChild.style.textAlign = 'center';
-      })
-      socket.on('init msg',function(messages){
-        for(let i = 0; messages.length; i++){
-          msg = messages[i]
-          if(msg.username === 'System'){
-            $('#messages').append($('<li class="bold">').text(msg.message));
-            document.getElementById('messages').lastChild.style.textAlign = 'center';
-          }else{
-            $('#messages').append($('<li>').text(msg.username + ': ' + msg.message));
-            if($('#un').val() === msg.username){
-              document.getElementById('messages').lastChild.style.textAlign = 'right';
-            }
-          }
-        }
-      })
-      socket.on('onlineUser',function(conClients){
-        console.log(conClients); //Anzeige aller angemeldeten Clients
-      })
-    }); 
-</script>
-
+<script src="frontend.js"></script>
