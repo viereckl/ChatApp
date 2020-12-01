@@ -77,6 +77,7 @@ io.on('connection', (socket) => {
           check = true;
         }
       });
+      socket.emit('checkLogin',check)
       if(check === false){
         let loginStr = uName + ' logged in' 
         console.log(loginStr);
@@ -87,7 +88,6 @@ io.on('connection', (socket) => {
         let conClientsArr = Array.from(conClients);
         socket.broadcast.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
       }
-      socket.emit('checkLogin',check)
     });
     socket.on('disconnect', () => closeCon(socket));
     socket.on('error', () => closeCon(socket));
