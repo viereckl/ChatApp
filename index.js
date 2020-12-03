@@ -16,15 +16,8 @@ var http = require('http').createServer(function(request, response) {
  
   var uri = url.parse(request.url).pathname, 
       filename = p.join(process.cwd(), uri);
-  
-  fs.exists(filename, function(exists) {
-    if(!exists) {
-      response.writeHead(404, { "Content-Type": "text/plain" });
-      response.write("404 Not Found\n");
-      response.end();
-      return;
-    }
- 
+      
+  if(fs.existsSync(filename)){
     if (fs.statSync(filename).isDirectory()) 
       filename += '/index.html';
  
@@ -46,7 +39,12 @@ var http = require('http').createServer(function(request, response) {
       response.write(file, "binary");
       response.end();
     });
-  });
+  }else{
+    response.writeHead(404, { "Content-Type": "text/plain" });
+    response.write("404 Not Found\n");
+    response.end();
+    return;
+  }
 });
 var io = require('socket.io')(http);
 
