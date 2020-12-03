@@ -33,9 +33,7 @@ $(function () {
       $('#msg').submit(function (e) {
         e.preventDefault(); // prevents page reloading
         socket.emit('chat message', $('#m').val(), user);
-        $('#messages').append($('<div>').text('me: ' + $('#m').val()));
-        document.getElementById('messages').lastChild.style.textAlign = 'right';
-        document.getElementById('messages').lastChild.scrollIntoView();
+        createMessage('me: ' + $('#m').val(),1);
         $('#m').val('');
         return false;
       });
@@ -43,32 +41,44 @@ $(function () {
   })
 
   socket.on('chat message', function (msg, uName) {
-    $('#messages').append($('<div>').text(uName + ': ' + msg));
-    document.getElementById('messages').lastChild.scrollIntoView();
+    createMessage(uName + ': ' + msg, 0);
   });
   socket.on('login message', function (text) {
-    $('#messages').append($('<div class="bold">').text(text));
-    document.getElementById('messages').lastChild.style.textAlign = 'center';
-    document.getElementById('messages').lastChild.scrollIntoView();
+    createMessage(text, 2);
   })
   socket.on('init msg', function (messages) {
     for (let i = 0; i < messages.length; i++) {
       msg = messages[i];
       if (msg.username === 'System') {
-        $('#messages').append($('<div class="bold">').text(msg.message));
-        document.getElementById('messages').lastChild.style.textAlign = 'center';
+        createMessage(msg.message,2);
       } else {
-        $('#messages').append($('<div>').text(msg.username + ': ' + msg.message));
         if (user === msg.username) {
-          document.getElementById('messages').lastChild.style.textAlign = 'right';
+          createMessage(msg.username + ': ' + msg.message, 1);
+        }else{
+          createMessage(msg.username + ': ' + msg.message, 0);
         }
       }
     }
-    $('#messages').append($('<div class="bold">').text(user + ' logged in'));
-    document.getElementById('messages').lastChild.style.textAlign = 'center';
-    document.getElementById('messages').lastChild.scrollIntoView();
+    createMessage(user + ' logged in', 2);
   })
   socket.on('onlineUser', function (conClients) {
     console.log(conClients); //Anzeige aller angemeldeten Clients
   })
+
+  function createMessage(pMessage, pType){
+    switch (pType) {
+      case 0: //show messages on the left side of the chat
+        $('#messages').append($('<div>').text(pMessage));
+        break;
+      case 1: //show messages on the right side of the chat
+        $('#messages').append($('<div>').text(pMessage));
+        document.getElementById('messages').lastChild.style.textAlign = 'right';
+        break;
+      default: //show messages in the middle of the chat
+        $('#messages').append($('<div class="bold">').text(pMessage));
+        document.getElementById('messages').lastChild.style.textAlign = 'center';
+        break;
+    }
+    document.getElementById('messages').lastChild.scrollIntoView();
+  }
 }); 
