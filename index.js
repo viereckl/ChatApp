@@ -12,41 +12,47 @@ var fs = require('fs'),
       "css": "text/css"
     };
 
-var http = require('http').createServer(function(request, response) {
- 
-  var uri = url.parse(request.url).pathname, 
-      filename = p.join(process.cwd(), uri);
+var http = require('http').createServer(function(request, response) { //erstellt HTTP Server
+  //requestListener (wird immer aufgerufen wenn der Server eine Anfrage erhält):
+  var uri = url.parse(request.url).pathname, //Speichern des Pfadnamens der angefragten URL
+      filename = p.join(process.cwd(), uri); //Zusammenfügen des Pfads anhand der CWDs und des URI
       
-  if(fs.existsSync(filename)){
-    if (fs.statSync(filename).isDirectory()) 
-      filename += '/index.html';
+  if(fs.existsSync(filename)){ //Wenn der filename existiert
+    if (fs.statSync(filename).isDirectory()) //wenn filename ein Verzeichnis ist
+      filename += '/index.html'; //anhängen von /index.html an den Verzeichnisnamen
  
-    fs.readFile(filename, "binary", function(err, file) {
-      if(err) {        
+    fs.readFile(filename, "binary", function(err, file) { //auslesen der Binärdaten der Datei
+      if(err) {
+        //ausgeben des Fehlers bei Dateieinlesen        
         response.writeHead(500, {"Content-Type": "text/plain"});
         response.write(err + "\n");
         response.end();
         return;
       }
       
-      var mimeType = mimeTypes[filename.split('.').pop()];
+      var mimeType = mimeTypes[filename.split('.').pop()]; //erkennen des MIME-Typs anhand der Dateiendung
       
-      if (!mimeType) {
+      if (!mimeType) { //wenn der MIME-Type nicht existiert wird text/plain dargestellt
         mimeType = 'text/plain';
       }
       
-      response.writeHead(200, { "Content-Type": mimeType });
-      response.write(file, "binary");
+      response.writeHead(200, { "Content-Type": mimeType }); //darstellen des Inhalts anhand des entsprechenden Typs
+      response.write(file, "binary"); 
       response.end();
     });
-  }else{
+  }else{ //Wenn der filename nicht existiert wird error 404 not found ausgegeben
     response.writeHead(404, { "Content-Type": "text/plain" });
     response.write("404 Not Found\n");
     response.end();
     return;
   }
 });
-var io = require('socket.io')(http);
+
+http.listen(3033, () => { //Bestimmen des Ports unter dem der HTTP-Server auf Anfragen wartet
+  console.log('listening on *:3033');
+});
+
+var io = require('socket.io')(http); //Einbinden von Socket.io mit dem HTTP-Server
 
 const path = 'messages.json'
 var messages = [];
@@ -105,10 +111,6 @@ function closeCon(socket){
     }
   });
 }
-
-http.listen(3033, () => {
-  console.log('listening on *:3033');
-});
 
 function addMsg(pUsername, pMsg){
   messages.push({
