@@ -34,20 +34,53 @@ form button {
     padding: 10px;
 }
 
-#messages {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+.msg{
+    margin-top: 20px;
+    display: flex;
+    align-items: flex-end;
 }
 
-#messages li {
-    padding: 5px 10px;
+.msgIcon {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    margin-left: 10px;
+    background: #ddd;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-radius: 50%;
+    flex-shrink: 0;
 }
 
-#messages li:nth-child(odd) {
-    background: #eee;
+.msgBubble{
+    max-width: 450px;
+    border-radius: 15px;
+    padding: 15px;
 }
 
-.bold {
-    font-weight: bold
+.msgBubble-left{
+    background-color: #ececec;
+    border-bottom-left-radius: 0;
+}
+
+.msgBubble-right{
+    background-color: #579ffb;
+    border-bottom-right-radius: 0;
+    color: white;
+}
+
+.msgUser{
+    font-weight: bold;
+    font-size: 20;
+}
+
+.msgText{
+    margin-top: 5px;
+}
+
+.sysMsg{
+    margin-top: 15px;
+    font-weight: bold;
+    text-align: center;
 }
