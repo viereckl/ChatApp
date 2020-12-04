@@ -56,7 +56,7 @@ $(function () {
       $('#msg').submit(function (e) {
         e.preventDefault(); // prevents page reloading
         socket.emit('chat message', $('#m').val(), user);
-        createMessage('me: ' + $('#m').val(),1);
+        createMessage($('#m').val(), 1, user);
         $('#m').val('');
         return false;
       });
@@ -75,7 +75,7 @@ $(function () {
   })
 
   socket.on('chat message', function (msg, uName) {
-    createMessage(uName + ': ' + msg, 0);
+    createMessage(msg, 0, uName);
   });
   socket.on('login message', function (text) {
     createMessage(text, 2);
@@ -84,12 +84,12 @@ $(function () {
     for (let i = 0; i < messages.length; i++) {
       msg = messages[i];
       if (msg.username === 'System') {
-        createMessage(msg.message,2);
+        createMessage(msg.message, 2);
       } else {
         if (user === msg.username) {
-          createMessage(msg.username + ': ' + msg.message, 1);
-        }else{
-          createMessage(msg.username + ': ' + msg.message, 0);
+          createMessage(msg.message, 1, msg.username);
+        } else {
+          createMessage(msg.message, 0, msg.username);
         }
       }
     }
@@ -99,20 +99,41 @@ $(function () {
     console.log(conClients); //Anzeige aller angemeldeten Clients
   })
 
-  function createMessage(pMessage, pType){
-    switch (pType) {
-      case 0: //show messages on the left side of the chat
-        $('#messages').append($('<div>').text(pMessage));
-        break;
-      case 1: //show messages on the right side of the chat
-        $('#messages').append($('<div>').text(pMessage));
-        document.getElementById('messages').lastChild.style.textAlign = 'right';
-        break;
-      default: //show messages in the middle of the chat
-        $('#messages').append($('<div class="bold">').text(pMessage));
-        document.getElementById('messages').lastChild.style.textAlign = 'center';
-        break;
+  function createMessage(pMessage, pType, pUser = 'System') {
+    $('#messages').append($('<div>'));
+    msg = document.getElementById('messages').lastChild;
+
+    if (pType === 0 || pType === 1) { //links oder rechts zu zeigende Chatnachricht
+      msg.classList.add('msg');
+      msgIcon = document.createElement('div');
+      msgIcon.style.backgroundImage = "url('https://image.flaticon.com/icons/svg/327/327779.svg')";
+      msgIcon.classList.add('msgIcon');
+      msg.append(msgIcon);
+      
+      msgUser = document.createElement('div');
+      msgUser.append(pUser);
+      msgUser.classList.add('msgUser');
+
+      msgText = document.createElement('div');
+      msgText.append(pMessage);
+      msgText.classList.add('msgText');
+
+      msgBubble = document.createElement('div');
+      msgBubble.appendChild(msgUser);
+      msgBubble.appendChild(msgText);
+      msgBubble.classList.add('msgBubble');
+      if(pType === 0){
+        msgBubble.classList.add('msgBubble-left');
+      }else{
+        msg.style.flexDirection = 'row-reverse';
+        msgBubble.classList.add('msgBubble-right');
+      }
+      msg.appendChild(msgBubble);
+    } else { //Systemnachricht
+      msg.classList.add('sysMsg')
+      msg.append(pMessage);
     }
+
     document.getElementById('messages').lastChild.scrollIntoView();
   }
 }); 
