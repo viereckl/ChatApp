@@ -96,7 +96,7 @@ $(function () {
     createMessage(user + ' logged in', 2);
   })
   socket.on('onlineUser', function (conClients) {
-    console.log(conClients); //Anzeige aller angemeldeten Clients
+    displayOnlineUser(conClients);
   })
 
   function createMessage(pMessage, pType, pUser = 'System') {
@@ -135,5 +135,19 @@ $(function () {
     }
 
     document.getElementById('messages').lastChild.scrollIntoView();
+  }
+
+  function displayOnlineUser(conClients){
+    var onlineUser = []
+    for(let i = 0; i < conClients.length; i++){
+      onlineUser.push(document.createElement('a'))
+      onlineUser[i].href = "#"
+      onlineUser[i].className = "w3-bar-item w3-button"
+      onlineUser[i].append(conClients[i].un);
+    }
+    onlineUser.forEach(element => {
+      document.getElementById('mySidebar').appendChild(element)
+    })
+    console.log(conClients); //Anzeige aller angemeldeten Clients
   }
 }); 
