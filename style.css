@@ -126,7 +126,7 @@ form button {
 #msgIconLetter {
     position: relative;
     top: 4%;
-    left: 27%;
+    text-align: center;
     font-size: 30px;
     color: white;
 }
