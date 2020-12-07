@@ -1,8 +1,13 @@
 $(function () {
   var socket = io();
   var user;
+  let colors = ['#8A2BE2', ];
   $('#login').submit(function (e) {
-    socket.emit('login', $('#un').val());
+    if (!$('#un').val()) {
+      window.alert("Kein g\u00fcltiger Benutzername!");
+    } else {
+      socket.emit('login', $('#un').val());
+    }
     return false;
   })
   socket.on('checkLogin', function (check) {
@@ -30,31 +35,37 @@ $(function () {
       openDiv.appendChild(openNav)
       main.appendChild(openDiv)
 */
-
       user = $('#un').val();
-      document.getElementById('login').remove();
+      document.getElementById('loginContainer').remove();
       const chat = document.createElement('div');
-      chat.style.padding = '10px';
-      chat.style.marginBottom = '50px';
+      //chat.style.padding = '10px';
+      //chat.style.marginBottom = '50px';
       chat.id = 'messages';
       document.getElementById('main').appendChild(chat);
       const msgForm = document.createElement('form');
-      msgForm.id = 'msg';
+      msgForm.id = 'msgForm';
       const msgInput = document.createElement('input');
+      msgInput.placeholder = 'Neue Nachricht';
       msgInput.id = 'm';
       msgInput.setAttribute("autocomplete", "off");
       msgForm.appendChild(msgInput);
       msgBtn = document.createElement('button');
-      msgBtn.append('Send');
+      msgBtn.id = 'msgBtn';
+      icon = document.createElement('i')
+      icon.classList.add('fas');
+      icon.classList.add('fa-paper-plane'); //fa-arrow-up
+      icon.id = 'sendIcon';
+      msgBtn.append(icon);
       msgBtn.setAttribute("type", "submit");
       msgForm.appendChild(msgBtn);
-      
-     // document.body.appendChild(sidebar);
-     // document.body.appendChild(main);
+
+      // document.body.appendChild(sidebar);
+      // document.body.appendChild(main);
       document.getElementById('main').appendChild(msgForm);
 
-      $('#msg').submit(function (e) {
+      $('#msgForm').submit(function (e) {
         e.preventDefault(); // prevents page reloading
+        if (!$('#m').val()) { return; }
         socket.emit('chat message', $('#m').val(), user);
         createMessage($('#m').val(), 1, user);
         $('#m').val('');
@@ -102,14 +113,19 @@ $(function () {
   function createMessage(pMessage, pType, pUser = 'System') {
     $('#messages').append($('<div>'));
     msg = document.getElementById('messages').lastChild;
-
+    
     if (pType === 0 || pType === 1) { //links oder rechts zu zeigende Chatnachricht
       msg.classList.add('msg');
       msgIcon = document.createElement('div');
-      msgIcon.style.backgroundImage = "url('https://image.flaticon.com/icons/svg/327/327779.svg')";
+      //msgIcon.style.backgroundImage = "url('https://image.flaticon.com/icons/svg/327/327779.svg')";
+      msgIcon.style.backgroundColor = colors[0];
       msgIcon.classList.add('msgIcon');
+      msgIconDiv = document.createElement('div');
+      msgIconDiv.append(pUser.charAt(0).toUpperCase());
+      msgIconDiv.id = ('msgIconLetter');
+      msgIcon.appendChild(msgIconDiv);
       msg.append(msgIcon);
-      
+
       msgUser = document.createElement('div');
       msgUser.append(pUser);
       msgUser.classList.add('msgUser');
@@ -122,9 +138,9 @@ $(function () {
       msgBubble.appendChild(msgUser);
       msgBubble.appendChild(msgText);
       msgBubble.classList.add('msgBubble');
-      if(pType === 0){
+      if (pType === 0) {
         msgBubble.classList.add('msgBubble-left');
-      }else{
+      } else {
         msg.style.flexDirection = 'row-reverse';
         msgBubble.classList.add('msgBubble-right');
       }
@@ -133,13 +149,12 @@ $(function () {
       msg.classList.add('sysMsg')
       msg.append(pMessage);
     }
-
     document.getElementById('messages').lastChild.scrollIntoView();
   }
 
-  function displayOnlineUser(conClients){
+  function displayOnlineUser(conClients) {
     var onlineUser = []
-    for(let i = 0; i < conClients.length; i++){
+    for (let i = 0; i < conClients.length; i++) {
       onlineUser.push(document.createElement('a'))
       onlineUser[i].href = "#"
       onlineUser[i].className = "w3-bar-item w3-button"
