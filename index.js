@@ -71,7 +71,7 @@ if(fs.existsSync(path)){
 var conClients = new Set();
 io.on('connection', (socket) => {
     socket.on('chat message', (msg, uName) => {
-      socket.emit('chat message', msg, uName); 
+      socket.broadcast.emit('chat message', msg, uName); 
       addMsg(uName, msg);
     });
     socket.on('login', (uName) => {
