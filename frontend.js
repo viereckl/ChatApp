@@ -138,7 +138,6 @@ $(function () {
       }else{
         onlineUser[i].append(conClients[i].un);
       }
-    
     }
     onlineUser.forEach(element => {
       users.appendChild(element);
