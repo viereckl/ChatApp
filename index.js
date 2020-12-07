@@ -9,7 +9,8 @@ var fs = require('fs'),
       "svg": "image/svg+xml",
       "json": "application/json",
       "js": "text/javascript",
-      "css": "text/css"
+      "css": "text/css",
+      "ico": "image/x-icon"
     };
 
 var http = require('http').createServer(function(request, response) { //erstellt HTTP Server

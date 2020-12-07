@@ -14,32 +14,11 @@ $(function () {
     if (check === true) {
       window.alert("Der Benutzername ist schon vergeben!") //hübscheres Design
     } else {
-      /*const sidebar = document.createElement('div'); 
-      sidebar.class = 'w3-sidebar w3-bar-block w3-card w3-animate-left'
-      sidebar.style = 'display:none'
-      sidebar.id = 'mySidebar'
-      const closeSB = document.createElement('button'); 
-      closeSB.class = 'w3-bar-item w3-button w3-large'
-      closeSB.onclick = 'w3_close'
-      closeSB.append('Close &times;');
-      sidebar.appendChild(closeSB);
-      const main = document.createElement('div');
-      main.id = 'main';
-      const openDiv = document.createElement('div');
-      openDiv.class = 'w3-teal';
-      const openNav = document.createElement('button');
-      openNav.id = 'openNav'
-      openNav.class = 'w3-button w3-teal w3-xlarge'
-      openNav.onclick = 'w3_open'
-      openNav.append('&#9776;')
-      openDiv.appendChild(openNav)
-      main.appendChild(openDiv)*/
-
+      document.getElementById('openNav').style.display = "inline-block";
+      
       user = $('#un').val();
       document.getElementById('loginContainer').remove();
       const chat = document.createElement('div');
-      //chat.style.padding = '10px';
-      //chat.style.marginBottom = '50px';
       chat.id = 'messages';
       document.getElementById('main').appendChild(chat);
       const msgForm = document.createElement('form');
@@ -59,8 +38,6 @@ $(function () {
       msgBtn.setAttribute("type", "submit");
       msgForm.appendChild(msgBtn);
 
-      //document.body.appendChild(sidebar);
-      //document.body.appendChild(main);
       document.getElementById('main').appendChild(msgForm);
 
       $('#msgForm').submit(function (e) {
@@ -172,6 +149,5 @@ $(function () {
       users.appendChild(element);
     })
     document.getElementById('mySidebar').appendChild(users);
-    console.log(conClients); //Anzeige aller angemeldeten Clients
   }
 }); 
