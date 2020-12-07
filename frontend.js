@@ -48,17 +48,6 @@ $(function () {
         $('#m').val('');
         return false;
       });
-      function w3_open() {
-        document.getElementById("main").style.marginLeft = "25%";
-        document.getElementById("mySidebar").style.width = "25%";
-        document.getElementById("mySidebar").style.display = "block";
-        document.getElementById("openNav").style.display = 'none';
-      }
-      function w3_close() {
-        document.getElementById("main").style.marginLeft = "0%";
-        document.getElementById("mySidebar").style.display = "none";
-        document.getElementById("openNav").style.display = "inline-block";
-      }
     }
   })
 
@@ -139,11 +128,17 @@ $(function () {
     }
     const users = document.createElement('div');
     users.id = 'conUsers';
+    conClients.sort(); //nochmal überprüfen
     for (let i = 0; i < conClients.length; i++) {
       onlineUser.push(document.createElement('a'))
       onlineUser[i].href = "#"
       onlineUser[i].className = "w3-bar-item w3-button"
-      onlineUser[i].append(conClients[i].un);
+      if(conClients[i].un === user){
+        onlineUser[i].append(conClients[i].un + ' (ME)');
+      }else{
+        onlineUser[i].append(conClients[i].un);
+      }
+    
     }
     onlineUser.forEach(element => {
       users.appendChild(element);

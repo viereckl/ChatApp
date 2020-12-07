@@ -91,7 +91,8 @@ io.on('connection', (socket) => {
         addMsg('System',loginStr)
         conClients.add({id: socket.id, un: uName});
         let conClientsArr = Array.from(conClients);
-        socket.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
+        socket.broadcast.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
+        socket.emit('onlineUser',conClientsArr);
       }
     });
     socket.on('disconnect', () => closeCon(socket));
@@ -109,6 +110,7 @@ function closeCon(socket){
       conClients.delete(user);
       let conClientsArr = Array.from(conClients);
       socket.broadcast.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
+      socket.emit('onlineUser',conClientsArr);
     }
   });
 }
