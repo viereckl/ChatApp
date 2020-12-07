@@ -71,7 +71,7 @@ if(fs.existsSync(path)){
 var conClients = new Set();
 io.on('connection', (socket) => {
     socket.on('chat message', (msg, uName) => {
-      socket.broadcast.emit('chat message', msg, uName); 
+      socket.emit('chat message', msg, uName); 
       addMsg(uName, msg);
     });
     socket.on('login', (uName) => {
@@ -90,7 +90,7 @@ io.on('connection', (socket) => {
         addMsg('System',loginStr)
         conClients.add({id: socket.id, un: uName});
         let conClientsArr = Array.from(conClients);
-        socket.broadcast.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
+        socket.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
       }
     });
     socket.on('disconnect', () => closeCon(socket));
