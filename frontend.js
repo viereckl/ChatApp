@@ -1,7 +1,9 @@
 $(function () {
   var socket = io();
+
   var user = false;
-  let colors = ['#8A2BE2', ];
+  let colors = ['#8A2BE2', '#00008B','DarkGreen', 'GreenYellow', 'khaki4', 'DarkOrange1', 'red1', 'burlywood4', 'yellow', 'violet', 'DarkOrchid2', 'orange'];
+  let uColor = Math.floor(Math.random() * colors.length);
   $('#login').submit(function (e) {
     if (!$('#un').val()) {
       window.alert("Kein g\u00fcltiger Benutzername!");
@@ -120,7 +122,7 @@ $(function () {
       msg.classList.add('msg');
       msgIcon = document.createElement('div');
       //msgIcon.style.backgroundImage = "url('https://image.flaticon.com/icons/svg/327/327779.svg')";
-      msgIcon.style.backgroundColor = colors[0];
+      msgIcon.style.backgroundColor = colors[uColor];
       msgIcon.classList.add('msgIcon');
       msgIconDiv = document.createElement('div');
       msgIconDiv.append(pUser.charAt(0).toUpperCase());
