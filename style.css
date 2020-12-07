@@ -185,3 +185,10 @@ form button {
     color: gray;
     border-radius: 10px;
 }
+
+#unAlert {
+    position: absolute;
+    top: 0px;
+    width: calc(100% - 20px);
+    margin: 10px;
+}

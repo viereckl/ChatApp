@@ -7,6 +7,7 @@ $(function () {
   $('#login').submit(function (e) {
     if (!$('#un').val()) {
       window.alert("Kein g\u00fcltiger Benutzername!");
+      document.getElementById('unAlert').style.display = 'block';
     } else {
       socket.emit('login', $('#un').val());
     }
@@ -14,9 +15,9 @@ $(function () {
   })
   socket.on('checkLogin', function (check) {
     if (check === true) {
-      window.alert("Der Benutzername ist schon vergeben!") //hübscheres Design
+      document.getElementById('unAlert').style.display = 'block';
     } else {
-      document.getElementById('openNav').style.display = "inline-block";
+      document.getElementById('navWrapper').style.display = "inline-block";
       
       user = $('#un').val();
       document.getElementById('loginContainer').remove();

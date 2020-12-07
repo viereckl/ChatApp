@@ -13,10 +13,14 @@
     <button class="w3-bar-item w3-large">Angemeldete User:</button>
   </div>
   <div id="main">
-    <div class="w3-teal">
-      <button id="openNav" class="w3-button w3-teal w3-xlarge"  style="display:none" onclick="sidebarToggle()">&#9776;</button>
+    <div class="w3-teal" id="navWrapper" style="display:none">
+      <button id="openNav" class="w3-button w3-teal w3-xlarge"  onclick="sidebarToggle()">&#9776;</button>
       <div class="w3-container">
       </div>
+    </div>
+    <div id='unAlert' class="w3-panel w3-red w3-display-container w3-round" style='display:none'>
+      <span onclick="this.parentElement.style.display='none'" class="w3-button w3-display-topright w3-round">&times;</span>
+      <h6>Der Benutzername ist bereits vergeben!</h6>
     </div>
     <div id="loginContainer">
       <h2>Herzlich Willkommen</h2>
