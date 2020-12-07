@@ -72,7 +72,7 @@ $(function () {
         }
       }
     }
-    createMessage(user + ' logged in', 2);
+    createMessage(user + ' logged in!', 2);
   })
   socket.on('onlineUser', function (conClients) {
     if (user != false) {
