@@ -83,7 +83,7 @@ io.on('connection', (socket) => {
       });
       socket.emit('checkLogin',check)
       if(check === false){
-        let loginStr = uName + ' logged in' 
+        let loginStr = uName + ' logged in!' 
         console.log(loginStr);
         socket.broadcast.emit('login message',loginStr)
         socket.emit('init msg',messages)
