@@ -9,7 +9,8 @@ var fs = require('fs'),
       "svg": "image/svg+xml",
       "json": "application/json",
       "js": "text/javascript",
-      "css": "text/css"
+      "css": "text/css",
+      "ico": "image/x-icon"
     };
 
 var http = require('http').createServer(function(request, response) { //erstellt HTTP Server
@@ -90,7 +91,8 @@ io.on('connection', (socket) => {
         addMsg('System',loginStr)
         conClients.add({id: socket.id, un: uName});
         let conClientsArr = Array.from(conClients);
-        socket.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
+        socket.broadcast.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
+        socket.emit('onlineUser',conClientsArr);
       }
     });
     socket.on('disconnect', () => closeCon(socket));
@@ -108,6 +110,7 @@ function closeCon(socket){
       conClients.delete(user);
       let conClientsArr = Array.from(conClients);
       socket.broadcast.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
+      socket.emit('onlineUser',conClientsArr);
     }
   });
 }
