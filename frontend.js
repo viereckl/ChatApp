@@ -1,7 +1,9 @@
 $(function () {
   var socket = io();
+
   var user = false;
-  let colors = ['#8A2BE2', ];
+  let colors = ['#8A2BE2', '#00008B', '#006400', '#8b864e', '#ff7f00', '#ff0000', '#8b7355', '#ee82ee', '#b23aee', '#ffa500'];
+  let uColor = Math.floor(Math.random() * colors.length);
   $('#login').submit(function (e) {
     if (!$('#un').val()) {
       window.alert("Kein g\u00fcltiger Benutzername!");
@@ -43,16 +45,16 @@ $(function () {
       $('#msgForm').submit(function (e) {
         e.preventDefault(); // prevents page reloading
         if (!$('#m').val()) { return; }
-        socket.emit('chat message', $('#m').val(), user);
-        createMessage($('#m').val(), 1, user);
+        socket.emit('chat message', $('#m').val(), uColor, user);
+        createMessage($('#m').val(), 1, uColor, user);
         $('#m').val('');
         return false;
       });
     }
   })
 
-  socket.on('chat message', function (msg, uName) {
-    createMessage(msg, 0, uName);
+  socket.on('chat message', function (msg, uColor, uName) {
+    createMessage(msg, 0, uColor, uName);
   });
   socket.on('login message', function (text) {
     createMessage(text, 2);
@@ -64,29 +66,30 @@ $(function () {
         createMessage(msg.message, 2);
       } else {
         if (user === msg.username) {
-          createMessage(msg.message, 1, msg.username);
+          createMessage(msg.message, 1, 0, msg.username);
         } else {
-          createMessage(msg.message, 0, msg.username);
+          createMessage(msg.message, 0, 0, msg.username);
         }
       }
     }
     createMessage(user + ' logged in', 2);
   })
   socket.on('onlineUser', function (conClients) {
-    if(user != false){
+    if (user != false) {
       displayOnlineUser(conClients);
     }
   })
 
-  function createMessage(pMessage, pType, pUser = 'System') {
+  function createMessage(pMessage, pType, pColor = 0, pUser = 'System') {
     $('#messages').append($('<div>'));
     msg = document.getElementById('messages').lastChild;
-    
+
     if (pType === 0 || pType === 1) { //links oder rechts zu zeigende Chatnachricht
       msg.classList.add('msg');
       msgIcon = document.createElement('div');
       //msgIcon.style.backgroundImage = "url('https://image.flaticon.com/icons/svg/327/327779.svg')";
-      msgIcon.style.backgroundColor = colors[0];
+      msgIcon.style.backgroundColor = pColor === 0 ? 'lightgray' : colors[pColor];
+      console.log(pColor === 0 ? 'lightgray' : colors[pColor]);
       msgIcon.classList.add('msgIcon');
       msgIconDiv = document.createElement('div');
       msgIconDiv.append(pUser.charAt(0).toUpperCase());
@@ -123,7 +126,7 @@ $(function () {
   function displayOnlineUser(conClients) {
     var onlineUser = []
     var oldDiv = document.getElementById('conUsers');
-    if(oldDiv){
+    if (oldDiv) {
       oldDiv.remove();
     }
     const users = document.createElement('div');

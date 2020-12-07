@@ -119,7 +119,6 @@ form button {
     position: relative;
     top: 3%;
     left: -6%;
-    /* transform: translateY(-50%); */
     padding: 0 0 0 1px;
     font-size: 22px;
 }
@@ -127,7 +126,7 @@ form button {
 #msgIconLetter {
     position: relative;
     top: 4%;
-    left: 27%;
+    text-align: center;
     font-size: 30px;
     color: white;
 }
@@ -176,7 +175,13 @@ form button {
 }
 
 .sysMsg {
-    margin-top: 15px;
     font-weight: bold;
     text-align: center;
+    width: fit-content;
+    margin: auto;
+    margin-top: 15px;
+    padding: 0 10px;
+    background-color: lightgray;
+    color: gray;
+    border-radius: 10px;
 }

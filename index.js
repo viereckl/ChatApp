@@ -71,12 +71,12 @@ if(fs.existsSync(path)){
 
 var conClients = new Set();
 io.on('connection', (socket) => {
-    socket.on('chat message', (msg, uName) => {
-      socket.broadcast.emit('chat message', msg, uName); 
+    socket.on('chat message', (msg, uColor, uName) => {
+      socket.broadcast.emit('chat message', msg, uColor,uName); 
       addMsg(uName, msg);
     });
     socket.on('login', (uName) => {
-      let check = false
+      let check = false;
       conClients.forEach((user) => {
         if (user.un === uName) {
           check = true;
@@ -84,7 +84,7 @@ io.on('connection', (socket) => {
       });
       socket.emit('checkLogin',check)
       if(check === false){
-        let loginStr = uName + ' logged in' 
+        let loginStr = uName + ' logged in!' 
         console.log(loginStr);
         socket.broadcast.emit('login message',loginStr)
         socket.emit('init msg',messages)
