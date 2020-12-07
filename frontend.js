@@ -1,6 +1,7 @@
 $(function () {
   var socket = io();
-  var user;
+
+  var user = false;
   let colors = ['#8A2BE2', '#00008B','DarkGreen', 'GreenYellow', 'khaki4', 'DarkOrange1', 'red1', 'burlywood4', 'yellow', 'violet', 'DarkOrchid2', 'orange'];
   let uColor = Math.floor(Math.random() * colors.length);
   $('#login').submit(function (e) {
@@ -34,8 +35,8 @@ $(function () {
       openNav.onclick = 'w3_open'
       openNav.append('&#9776;')
       openDiv.appendChild(openNav)
-      main.appendChild(openDiv)
-*/
+      main.appendChild(openDiv)*/
+
       user = $('#un').val();
       document.getElementById('loginContainer').remove();
       const chat = document.createElement('div');
@@ -60,8 +61,8 @@ $(function () {
       msgBtn.setAttribute("type", "submit");
       msgForm.appendChild(msgBtn);
 
-      // document.body.appendChild(sidebar);
-      // document.body.appendChild(main);
+      //document.body.appendChild(sidebar);
+      //document.body.appendChild(main);
       document.getElementById('main').appendChild(msgForm);
 
       $('#msgForm').submit(function (e) {
@@ -108,7 +109,9 @@ $(function () {
     createMessage(user + ' logged in', 2);
   })
   socket.on('onlineUser', function (conClients) {
-    displayOnlineUser(conClients);
+    if(user != false){
+      displayOnlineUser(conClients);
+    }
   })
 
   function createMessage(pMessage, pType, pUser = 'System') {
@@ -155,6 +158,12 @@ $(function () {
 
   function displayOnlineUser(conClients) {
     var onlineUser = []
+    var oldDiv = document.getElementById('conUsers');
+    if(oldDiv){
+      oldDiv.remove();
+    }
+    const users = document.createElement('div');
+    users.id = 'conUsers';
     for (let i = 0; i < conClients.length; i++) {
       onlineUser.push(document.createElement('a'))
       onlineUser[i].href = "#"
@@ -162,8 +171,9 @@ $(function () {
       onlineUser[i].append(conClients[i].un);
     }
     onlineUser.forEach(element => {
-      document.getElementById('mySidebar').appendChild(element)
+      users.appendChild(element);
     })
+    document.getElementById('mySidebar').appendChild(users);
     console.log(conClients); //Anzeige aller angemeldeten Clients
   }
 }); 
