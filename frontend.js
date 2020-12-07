@@ -139,11 +139,17 @@ $(function () {
     }
     const users = document.createElement('div');
     users.id = 'conUsers';
+    //conClients.sort();
     for (let i = 0; i < conClients.length; i++) {
       onlineUser.push(document.createElement('a'))
       onlineUser[i].href = "#"
       onlineUser[i].className = "w3-bar-item w3-button"
-      onlineUser[i].append(conClients[i].un);
+      /*if(conClients[i].un === user){
+        onlineUser[i].append(conClients[i].un + ' (ME)');
+      }else{*/
+        onlineUser[i].append(conClients[i].un);
+     // }
+    
     }
     onlineUser.forEach(element => {
       users.appendChild(element);
