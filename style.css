@@ -8,11 +8,54 @@ body {
     font: 13px Helvetica, Arial;
 }
 
-form {
+#main {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#loginContainer {
+    position: absolute;
+    top: 36%;
+    padding: 20px 80px;
+    align-self: center;
+    text-align: center;
+}
+
+#un {
+    margin-top: 10px;
+    border-radius: 25px;
+    padding: 2px 5px;
+    text-align: center;
+    font-size: large;
+}
+
+#un:focus {
+    outline: none;
+}
+
+#loginBtn {
+    margin-top: 10px;
+    border-radius: 10px;
+    border: none;
+    padding: 2px 10px;
+    background-color: #579ffb;
+    cursor: pointer;
+}
+
+#loginBtn:focus {
+    outline: none;
+}
+
+#messages {
+    padding: 10px;
+    overflow: scroll;
+}
+
+/*form {
     background: #000;
     padding: 3px;
-    position: fixed;
-    bottom: 0;
     width: 100%;
 }
 
@@ -32,12 +75,65 @@ form button {
     background: rgb(130, 224, 255);
     border: none;
     padding: 10px;
-}
+}*/
 
-.msg{
+.msg {
     margin-top: 20px;
     display: flex;
     align-items: flex-end;
+}
+
+#msgForm {
+    margin: 10px;
+    display: flex;
+    align-items: flex-end;
+}
+
+#m {
+    height: 40px;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 40px;
+    width: calc(100% - 55px);
+    background-color: #dedfed;
+}
+
+#msgBtn {
+    float: right;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 25px;
+    border: none;
+    color: white;
+    background-color: #4870df;
+    border-color: #4870df;
+    margin-left: 12px;
+}
+
+#msgBtn:focus {
+    outline: none;
+}
+
+#sendIcon {
+    position: relative;
+    top: 3%;
+    left: -6%;
+    /* transform: translateY(-50%); */
+    padding: 0 0 0 1px;
+    font-size: 22px;
+}
+
+#msgIconLetter {
+    position: relative;
+    top: 4%;
+    left: 27%;
+    font-size: 30px;
+    color: white;
+}
+
+#m:focus {
+    outline: none;
 }
 
 .msgIcon {
@@ -53,33 +149,33 @@ form button {
     flex-shrink: 0;
 }
 
-.msgBubble{
+.msgBubble {
     max-width: 450px;
     border-radius: 15px;
     padding: 15px;
 }
 
-.msgBubble-left{
+.msgBubble-left {
     background-color: #ececec;
     border-bottom-left-radius: 0;
 }
 
-.msgBubble-right{
+.msgBubble-right {
     background-color: #579ffb;
     border-bottom-right-radius: 0;
     color: white;
 }
 
-.msgUser{
+.msgUser {
     font-weight: bold;
     font-size: 20;
 }
 
-.msgText{
+.msgText {
     margin-top: 5px;
 }
 
-.sysMsg{
+.sysMsg {
     margin-top: 15px;
     font-weight: bold;
     text-align: center;
