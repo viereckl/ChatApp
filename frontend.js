@@ -18,6 +18,7 @@ $(function () {
       document.getElementById('unAlert').style.display = 'block';
     } else {
       document.getElementById('navWrapper').style.display = "inline-block";
+      document.getElementById('unAlert').style.display = 'none';
       
       user = $('#un').val();
       document.getElementById('loginContainer').remove();
@@ -82,13 +83,10 @@ $(function () {
   })
 
   function createMessage(pMessage, pType, pColor = 0, pUser = 'System') {
-    $('#messages').append($('<div>'));
-    msg = document.getElementById('messages').lastChild;
-
+    msg = document.createElement('div');
     if (pType === 0 || pType === 1) { //links oder rechts zu zeigende Chatnachricht
       msg.classList.add('msg');
       msgIcon = document.createElement('div');
-      //msgIcon.style.backgroundImage = "url('https://image.flaticon.com/icons/svg/327/327779.svg')";
       msgIcon.style.backgroundColor = pColor === 0 ? 'lightgray' : colors[pColor];
       console.log(pColor === 0 ? 'lightgray' : colors[pColor]);
       msgIcon.classList.add('msgIcon');
@@ -121,6 +119,7 @@ $(function () {
       msg.classList.add('sysMsg')
       msg.append(pMessage);
     }
+    document.getElementById('messages').appendChild(msg);
     document.getElementById('messages').lastChild.scrollIntoView();
   }
 
@@ -132,7 +131,9 @@ $(function () {
     }
     const users = document.createElement('div');
     users.id = 'conUsers';
-    conClients.sort(); //nochmal überprüfen
+    console.log(conClients);
+    //conClients.sort(); //nochmal überprüfen
+    conClients.sort((a,b) => (a.un > b.un) ? 1 : ((b.un > a.un) ? -1 : 0)); //sort Clients
     for (let i = 0; i < conClients.length; i++) {
       onlineUser.push(document.createElement('a'))
       onlineUser[i].href = "#"

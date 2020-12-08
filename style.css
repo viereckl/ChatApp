@@ -16,11 +16,8 @@ body {
 }
 
 #loginContainer {
-    position: absolute;
-    top: 36%;
-    padding: 20px 80px;
-    align-self: center;
     text-align: center;
+    margin: auto;
 }
 
 #un {
@@ -50,6 +47,7 @@ body {
 
 #messages {
     padding: 10px;
+    margin-top: auto;
     overflow: scroll;
 }
 
