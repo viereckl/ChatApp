@@ -75,7 +75,7 @@ io.on('connection', (socket) => {
       socket.broadcast.emit('chat message', msg, uColor,uName); 
       addMsg(uName, msg);
     });
-    socket.on('login', (uName) => {
+    socket.on('login', (uName, uColor) => {
       let check = false;
       conClients.forEach((user) => {
         if (user.un === uName) {
@@ -84,12 +84,12 @@ io.on('connection', (socket) => {
       });
       socket.emit('checkLogin',check)
       if(check === false){
-        let loginStr = uName + ' logged in!' 
+        let loginStr = uName + ' logged in!' ;
         console.log(loginStr);
-        socket.broadcast.emit('login message',loginStr)
-        socket.emit('init msg',messages)
-        addMsg('System',loginStr)
-        conClients.add({id: socket.id, un: uName});
+        socket.broadcast.emit('login message',loginStr);
+        socket.emit('init msg',messages);
+        addMsg('System',loginStr);
+        conClients.add({id: socket.id, un: uName, color: uColor});
         let conClientsArr = Array.from(conClients);
         socket.broadcast.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
         socket.emit('onlineUser',conClientsArr);

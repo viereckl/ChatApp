@@ -2,14 +2,15 @@ $(function () {
   var socket = io();
 
   var user = false;
-  let colors = ['#8A2BE2', '#00008B', '#006400', '#8b864e', '#ff7f00', '#ff0000', '#8b7355', '#ee82ee', '#b23aee', '#ffa500'];
-  let uColor = Math.floor(Math.random() * colors.length);
+  let colorsOld = ['#8A2BE2', '#00008B', '#006400', '#8b864e', '#ff7f00', '#ff0000', '#8b7355', '#ee82ee', '#b23aee', '#ffa500'];
+  let colors = ['#800000', '#ff0000', '#800080', '#ff00ff', '#ff00ff', '#00ff00', '#808000', '#ffff00', '#000080', '#0000ff', '#008080', '#00ffff', '#ffa500', '#7fffd4', '#8a2be2', '#a52a2a', '#5f9ea0', '#7fff00', '#d2691e', '#ff7f50', '#6495ed', '#b8860b', '#006400', '#bdb76b', '#ff1493', '#1e90ff', '#cd853f', '#a0522d', '#4682b4', '#40e0d0', '#ee82ee', '#9acd32', '#00008B', '8b864e', 'ff7f00', '8b7355', 'b23aee'];
+  let uColor = Math.floor(Math.random() * (colors.length));
   $('#login').submit(function (e) {
     if (!$('#un').val()) {
       window.alert("Kein g\u00fcltiger Benutzername!");
       document.getElementById('unAlert').style.display = 'block';
     } else {
-      socket.emit('login', $('#un').val());
+      socket.emit('login', $('#un').val(), uColor);
     }
     return false;
   })
@@ -19,7 +20,7 @@ $(function () {
     } else {
       document.getElementById('navWrapper').style.display = "inline-block";
       document.getElementById('unAlert').style.display = 'none';
-      
+
       user = $('#un').val();
       document.getElementById('loginContainer').remove();
       const chat = document.createElement('div');
@@ -68,9 +69,9 @@ $(function () {
         createMessage(msg.message, 2);
       } else {
         if (user === msg.username) {
-          createMessage(msg.message, 1, 0, msg.username);
+          createMessage(msg.message, 1, -1, msg.username);
         } else {
-          createMessage(msg.message, 0, 0, msg.username);
+          createMessage(msg.message, 0, -1, msg.username);
         }
       }
     }
@@ -82,17 +83,16 @@ $(function () {
     }
   })
 
-  function createMessage(pMessage, pType, pColor = 0, pUser = 'System') {
+  function createMessage(pMessage, pType, pColor = -1, pUser = 'System') {
     msg = document.createElement('div');
     if (pType === 0 || pType === 1) { //links oder rechts zu zeigende Chatnachricht
       msg.classList.add('msg');
       msgIcon = document.createElement('div');
-      msgIcon.style.backgroundColor = pColor === 0 ? 'lightgray' : colors[pColor];
-      console.log(pColor === 0 ? 'lightgray' : colors[pColor]);
-      msgIcon.classList.add('msgIcon');
+      msgIcon.style.backgroundColor = pColor === -1 ? 'lightgray' : colors[pColor];
+      msgIcon.classList.add('UserIcon');
       msgIconDiv = document.createElement('div');
       msgIconDiv.append(pUser.charAt(0).toUpperCase());
-      msgIconDiv.id = ('msgIconLetter');
+      msgIconDiv.classList.add('UserIconLetter');
       msgIcon.appendChild(msgIconDiv);
       msg.append(msgIcon);
 
@@ -124,29 +124,52 @@ $(function () {
   }
 
   function displayOnlineUser(conClients) {
-    var onlineUser = []
+    //var onlineUser = []
     var oldDiv = document.getElementById('conUsers');
-    if (oldDiv) {
-      oldDiv.remove();
-    }
+    if (oldDiv) { oldDiv.remove() }
+
     const users = document.createElement('div');
     users.id = 'conUsers';
-    console.log(conClients);
     //conClients.sort(); //nochmal überprüfen
-    conClients.sort((a,b) => (a.un > b.un) ? 1 : ((b.un > a.un) ? -1 : 0)); //sort Clients
+    conClients.sort((a, b) => (a.un > b.un) ? 1 : ((b.un > a.un) ? -1 : 0)); //sort Clients
     for (let i = 0; i < conClients.length; i++) {
-      onlineUser.push(document.createElement('a'))
-      onlineUser[i].href = "#"
-      onlineUser[i].className = "w3-bar-item w3-button"
+      userClient = document.createElement('div');
+      userClient.classList.add('userClient');
+      //onlineUser.push(document.createElement('p'))
+      UserIcon = document.createElement('div');
+      UserIcon.style.backgroundColor = colors[conClients[i].color];
+      UserIcon.classList.add('UserIcon');
+      UserIcon.classList.add('small-UserIcon');
+      UserIconDiv = document.createElement('div');
+      UserIconDiv.append(conClients[i].un.charAt(0).toUpperCase());
+      UserIconDiv.classList.add('UserIconLetter');
+      UserIconDiv.classList.add('small-UserIconLetter');
+      UserIcon.appendChild(UserIconDiv);
+
+      userClient.appendChild(UserIcon);
+      onlineUser = document.createElement('p');
+      //onlineUser[i].href = "#"
+      //onlineUser[i].className = "w3-bar-item"
+      onlineUser.classList.add('w3-bar-item');
+      //if (conClients[i].un === user) {
+      //  onlineUser[i].append(conClients[i].un + ' (ME)');
+
+      //} else {
+      onlineUser.append(conClients[i].un);
+      userClient.appendChild(onlineUser);
       if(conClients[i].un === user){
-        onlineUser[i].append(conClients[i].un + ' (ME)');
-      }else{
-        onlineUser[i].append(conClients[i].un);
+        youT = document.createElement('i');
+        youT.append('(You)');
+        youT.style.margin = 'auto 3px';
+        userClient.appendChild(youT);
       }
+      //}
+      conClients[i].un === user ? users.prepend(userClient) : users.appendChild(userClient);
     }
-    onlineUser.forEach(element => {
-      users.appendChild(element);
-    })
+    //onlineUser.forEach(element => {
+    //users.appendChild(element);
+    //})
+    document.getElementById('sidebarHeading').innerHTML = 'Online-' + conClients.length;
     document.getElementById('mySidebar').appendChild(users);
   }
 }); 

@@ -11,15 +11,15 @@
 
 <body>
   <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
-    <button class="w3-bar-item w3-large">Angemeldete User:</button>
+    <p class="w3-bar-item w3-large" id="sidebarHeading"></p>
   </div>
   <div id='unAlert' class="w3-panel w3-red w3-display-container w3-round" style='display:none'>
     <span onclick="this.parentElement.style.display='none'" class="w3-button w3-display-right w3-round">&times;</span>
     <h6>Der Benutzername ist bereits vergeben!</h6>
   </div>
   <div id="main">
-    <div class="w3-teal" id="navWrapper" style="display:none">
-      <button id="openNav" class="w3-button w3-teal w3-xlarge"  onclick="sidebarToggle()">&#9776;</button>
+    <div class="w3-teal" id="navWrapper" style="flex-shrink: 0; display:none; margin-bottom: 10px;">
+      <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="sidebarToggle()">&#9776;</button>
       <div class="w3-container">
       </div>
     </div>
@@ -34,13 +34,13 @@
   </div>
   <script>
     let toggle = 'closed';
-    function sidebarToggle(){
-      if(toggle ==='closed'){
+    function sidebarToggle() {
+      if (toggle === 'closed') {
         document.getElementById("main").style.marginLeft = "25%";
         document.getElementById("mySidebar").style.width = "25%";
         document.getElementById("mySidebar").style.display = "block";
         toggle = 'opened';
-      }else{
+      } else {
         document.getElementById("main").style.marginLeft = "0%";
         document.getElementById("mySidebar").style.display = "none";
         document.getElementById("openNav").style.display = "inline-block";
