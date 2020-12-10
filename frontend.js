@@ -18,7 +18,7 @@ $(function () {
     if (check === true) {
       document.getElementById('unAlert').style.display = 'block';
     } else {
-      document.getElementById('navWrapper').style.display = "inline-block";
+      document.getElementById('navWrapper').style.display = "flex";
       document.getElementById('unAlert').style.display = 'none';
 
       user = $('#un').val();
@@ -44,6 +44,7 @@ $(function () {
       msgForm.appendChild(msgBtn);
 
       document.getElementById('main').appendChild(msgForm);
+      document.getElementById('displayUser').append(user);
 
       $('#msgForm').submit(function (e) {
         e.preventDefault(); // prevents page reloading

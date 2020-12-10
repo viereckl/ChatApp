@@ -20,6 +20,14 @@ body {
 
 #navWrapper {
     background-color: #2196f3 !important;
+    flex-shrink: 0;
+    display: none;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+#navWrapper>p {
+    margin-right: 20px;
 }
 
 #openNav {
