@@ -70,8 +70,9 @@ if(fs.existsSync(path)){ //Auslesen und speichern von messages.json im messages 
 }
 
 var conClients = new Set(); //Erstellen eines Sets für verbundene Clients
-io.on('connection', (socket) => { //Event Handler für Verbindung eines Clients
-    socket.on('chat message', (msg, uColor, uName) => { //Event Handler für das Senden einer Nachricht
+
+io.on('connection', (socket) => { //Event bei Verbindung eines Clients
+    socket.on('chat message', (msg, uColor, uName) => { //Event beim Senden einer Nachricht
       socket.broadcast.emit('chat message', msg, uColor,uName); //Senden einer Nachricht an alle Clients außer Sender
       addMsg(uName, msg); //Speichern der gesendeten Nachricht im Speicher
     });
@@ -91,12 +92,12 @@ io.on('connection', (socket) => { //Event Handler für Verbindung eines Clients
         addMsg('System',loginStr); //Hinzufügen der Systemnachricht zum Speicher
         conClients.add({id: socket.id, un: uName, color: uColor}); //Hinzufügen des Clients zum Set der verbundenen Clients
         let conClientsArr = Array.from(conClients); //Konvertieren des Sets in ein Array für die Übergabe
-        socket.broadcast.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
-        socket.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
+        socket.broadcast.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer an alle außer Sender
+        socket.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer an Sender
       }
     });
-    socket.on('disconnect', () => closeCon(socket));  //Event für Schließen der Verbindung (normal)
-    socket.on('error', () => closeCon(socket));       //Event für Schließen der Verbindung (bei Fehlern)
+    socket.on('disconnect', () => closeCon(socket));  //Event bei Schließen der Verbindung (normal)
+    socket.on('error', () => closeCon(socket));       //Event bei SChließen der Verbindung (bei Fehlern)
 }); 
 
 function closeCon(socket){  //Funktion um Verbindung zu schließen
@@ -109,8 +110,8 @@ function closeCon(socket){  //Funktion um Verbindung zu schließen
       addMsg('System',logoutStr)
       conClients.delete(user);
       let conClientsArr = Array.from(conClients);
-      socket.broadcast.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
-      socket.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
+      socket.broadcast.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer an alle außer Sender
+      socket.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer an Sender
     }
   });
 }
