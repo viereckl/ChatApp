@@ -3,19 +3,15 @@ body {
 }
 
 #main {
-    height: 100vh;
+    height: 100vh; /*Fall Back*/
+    height: calc(var(--h, 1vh) *100);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-#loginContainer {
-    text-align: center;
-    margin: auto;
-}
-
-#loginContainer>h2 {
-    margin-top: -10px;
+#mySidebar {
+    display: none;
 }
 
 #navWrapper {
@@ -36,6 +32,15 @@ body {
 
 #openNav:focus {
     outline: none;
+}
+
+#loginContainer {
+    text-align: center;
+    margin: auto;
+}
+
+#loginContainer>h2 {
+    margin-top: -10px;
 }
 
 #un {
@@ -70,30 +75,6 @@ body {
     overflow: scroll;
 }
 
-/*form {
-    background: #000;
-    padding: 3px;
-    width: 100%;
-}
-
-form input {
-    border: 0;
-    padding: 10px;
-    width: 90%;
-    margin-right: 0.5%;
-}
-
-#login {
-    position: relative;
-}
-
-form button {
-    width: 9%;
-    background: rgb(130, 224, 255);
-    border: none;
-    padding: 10px;
-}*/
-
 .msg {
     margin-top: 20px;
     display: flex;
@@ -125,9 +106,7 @@ form button {
     border: none;
     color: white;
     background-color: #2196f3;
-    /*#4870df;*/
     border-color: #2196f3;
-    /*#4870df;*/
     margin-left: 12px;
 }
 
@@ -191,8 +170,6 @@ form button {
 
 .msgBubble-right {
     background-color: #2196f3;
-    /*#4870df;*/
-    /*#579ffb;*/
     border-bottom-right-radius: 0;
     color: white;
 }
@@ -221,6 +198,7 @@ form button {
 }
 
 #unAlert {
+    display: none;
     position: absolute;
     top: 0px;
     width: calc(100% - 20px);
@@ -250,7 +228,7 @@ form button {
         margin-left: 1px;
         margin-right: 3px;
     }
-    #sidebarHeading{
+    #sidebarHeading {
         padding-left: 3px;
     }
 }
@@ -260,7 +238,7 @@ form button {
         margin-left: 5px;
         margin-right: 7px;
     }
-    #sidebarHeading{
+    #sidebarHeading {
         padding-left: 8px;
     }
 }
@@ -270,7 +248,7 @@ form button {
         margin-left: 7px;
         margin-right: 7px;
     }
-    #sidebarHeading{
+    #sidebarHeading {
         padding-left: 10px;
     }
 }
@@ -280,7 +258,7 @@ form button {
         margin-left: 10px;
         margin-right: 10px;
     }
-    #sidebarHeading{
+    #sidebarHeading {
         padding-left: 13px;
     }
 }
@@ -297,7 +275,7 @@ form button {
         margin-left: 15px;
         margin-right: 15px;
     }
-    #sidebarHeading{
+    #sidebarHeading {
         padding-left: 18px;
     }
 }
