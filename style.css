@@ -12,14 +12,21 @@ body {
 #loginContainer {
     text-align: center;
     margin: auto;
+    border-color: #2196f3;
+    border-width: 3px; 
+    border-style: solid;
+    border-radius: 30px;
+    padding: 50px 50px;
 }
 
 #loginContainer>h2 {
-    margin-top: -10px;
+    color: #2196f3;
+    margin-top: 5px;
+    margin-bottom: 50px;
 }
 
 #navWrapper {
-    background-color: #2196f3 !important;
+    background-color:#2196f3 !important;
     flex-shrink: 0;
     display: none;
     margin-bottom: 10px;
@@ -51,10 +58,12 @@ body {
 }
 
 #loginBtn {
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;
     border-radius: 10px;
     border: none;
-    padding: 2px 10px;
+    padding: 4px 10px;
+    color: white;
     background-color: #2196f3;
     /*#579ffb;*/
     cursor: pointer;
