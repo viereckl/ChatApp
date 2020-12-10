@@ -13,7 +13,7 @@ var user = false;
 let colors = ['#800000', '#ff0000', '#800080', '#ff00ff', '#ff00ff', '#00ff00', '#808000', '#000080', '#0000ff', '#008080', '#00ffff', '#ffa500', '#7fffd4', '#8a2be2', '#a52a2a', '#5f9ea0', '#7fff00', '#d2691e', '#ff7f50', '#6495ed', '#b8860b', '#006400', '#bdb76b', '#ff1493', '#1e90ff', '#cd853f', '#a0522d', '#4682b4', '#40e0d0', '#ee82ee', '#9acd32', '#00008B', '#8b864e', '#ff7f00', '#8b7355', '#b23aee'];
 let uColor = Math.floor(Math.random() * (colors.length));
 document.getElementById('login').onsubmit = function (e) {
-  if (!document.getElementById('un').value || /^\s/.test(document.getElementById('un').value)) {
+  if (!document.getElementById('un').value || /^\s/.test(document.getElementById('un').value) || document.getElementById('un').value.endsWith(' ')) {
     document.getElementById('alertMessage').innerHTML = 'Kein g\u00fcltiger Benutzername!';
     document.getElementById('unAlert').style.display = 'block';
   } else {
@@ -45,7 +45,7 @@ socket.on('checkLogin', function (check) {
     msgBtn.id = 'msgBtn';
     icon = document.createElement('i')
     icon.classList.add('fas');
-    icon.classList.add('fa-paper-plane'); //fa-arrow-up
+    icon.classList.add('fa-paper-plane');
     icon.id = 'sendIcon';
     msgBtn.append(icon);
     msgBtn.setAttribute("type", "submit");
@@ -53,17 +53,16 @@ socket.on('checkLogin', function (check) {
 
     document.getElementById('main').appendChild(msgForm);
     document.getElementById('displayUser').append(user);
-
-    document.getElementById('msgForm').onsubmit = function (e) {
-      e.preventDefault(); // prevents page reloading
-      if (!document.getElementById('m').value || /^\s/.test(document.getElementById('m').value)) { return; }
-      socket.emit('chat message', document.getElementById('m').value, uColor, user);
-      createMessage(document.getElementById('m').value, 1, uColor, user);
-      document.getElementById('m').value = '';
-      return false;
-    };
   }
 
+  document.getElementById('msgForm').onsubmit = function (e) {
+    e.preventDefault(); // prevents page reloading
+    if (!document.getElementById('m').value || /^\s/.test(document.getElementById('m').value) || document.getElementById('m').value.endsWith(' ')) { return; }
+    socket.emit('chat message', document.getElementById('m').value, uColor, user);
+    createMessage(document.getElementById('m').value, 1, uColor, user);
+    document.getElementById('m').value = '';
+    return false;
+  };
 
   socket.on('chat message', function (msg, uColor, uName) {
     createMessage(msg, 0, uColor, uName);
