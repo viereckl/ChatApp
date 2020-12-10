@@ -15,7 +15,7 @@
   </div>
   <div id='unAlert' class="w3-panel w3-red w3-display-container w3-round" style='display:none'>
     <span onclick="this.parentElement.style.display='none'" class="w3-button w3-display-right w3-round">&times;</span>
-    <h6>Der Benutzername ist bereits vergeben!</h6>
+    <h6 id='alertMessage'></h6>
   </div>
   <div id="main">
     <div class="w3-teal" id="navWrapper">
@@ -33,19 +33,6 @@
   </div>
   <script>
     let toggle = 'closed';
-    function sidebarToggle() {
-      if (toggle === 'closed') {
-        document.getElementById("main").style.marginLeft = "25%";
-        document.getElementById("mySidebar").style.width = "25%";
-        document.getElementById("mySidebar").style.display = "block";
-        toggle = 'opened';
-      } else {
-        document.getElementById("main").style.marginLeft = "0%";
-        document.getElementById("mySidebar").style.display = "none";
-        document.getElementById("openNav").style.display = "inline-block";
-        toggle = 'closed';
-      }
-    }
   </script>
 </body>
 

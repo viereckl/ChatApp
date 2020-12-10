@@ -1,60 +1,60 @@
-$(function () {
-  var socket = io();
+var socket = io();
 
-  var user = false;
-  let colors = ['#800000', '#ff0000', '#800080', '#ff00ff', '#ff00ff', '#00ff00', '#808000', '#000080', '#0000ff', '#008080', '#00ffff', '#ffa500', '#7fffd4', '#8a2be2', '#a52a2a', '#5f9ea0', '#7fff00', '#d2691e', '#ff7f50', '#6495ed', '#b8860b', '#006400', '#bdb76b', '#ff1493', '#1e90ff', '#cd853f', '#a0522d', '#4682b4', '#40e0d0', '#ee82ee', '#9acd32', '#00008B', '#8b864e', '#ff7f00', '#8b7355', '#b23aee'];
-  let uColor = Math.floor(Math.random() * (colors.length));
-  $('#login').submit(function (e) {
-    if (!$('#un').val()) {
-      window.alert("Kein g\u00fcltiger Benutzername!");
-      document.getElementById('unAlert').style.display = 'block';
-    } else {
-      socket.emit('login', $('#un').val(), uColor);
-    }
-    return false;
-  })
-  socket.on('checkLogin', function (check) {
-    if (check === true) {
-      document.getElementById('unAlert').style.display = 'block';
-    } else {
-      document.getElementById('navWrapper').style.display = "flex";
-      document.getElementById('unAlert').style.display = 'none';
+var user = false;
+let colors = ['#800000', '#ff0000', '#800080', '#ff00ff', '#ff00ff', '#00ff00', '#808000', '#000080', '#0000ff', '#008080', '#00ffff', '#ffa500', '#7fffd4', '#8a2be2', '#a52a2a', '#5f9ea0', '#7fff00', '#d2691e', '#ff7f50', '#6495ed', '#b8860b', '#006400', '#bdb76b', '#ff1493', '#1e90ff', '#cd853f', '#a0522d', '#4682b4', '#40e0d0', '#ee82ee', '#9acd32', '#00008B', '#8b864e', '#ff7f00', '#8b7355', '#b23aee'];
+let uColor = Math.floor(Math.random() * (colors.length));
+$('#login').submit(function (e) {
+  if (!$('#un').val() || /^\s/.test($('#un').val())) {
+    document.getElementById('alertMessage').innerHTML = 'Kein g\u00fcltiger Benutzername!';
+    document.getElementById('unAlert').style.display = 'block';
+  } else {
+    socket.emit('login', $('#un').val(), uColor);
+  }
+  return false;
+})
+socket.on('checkLogin', function (check) {
+  if (check === true) {
+    document.getElementById('alertMessage').innerHTML = 'Der Benutzername ist bereits vergeben!';
+    document.getElementById('unAlert').style.display = 'block';
+  } else {
+    document.getElementById('navWrapper').style.display = "flex";
+    document.getElementById('unAlert').style.display = 'none';
 
-      user = $('#un').val();
-      document.getElementById('loginContainer').remove();
-      const chat = document.createElement('div');
-      chat.id = 'messages';
-      document.getElementById('main').appendChild(chat);
-      const msgForm = document.createElement('form');
-      msgForm.id = 'msgForm';
-      const msgInput = document.createElement('input');
-      msgInput.placeholder = 'Neue Nachricht';
-      msgInput.id = 'm';
-      msgInput.setAttribute("autocomplete", "off");
-      msgForm.appendChild(msgInput);
-      msgBtn = document.createElement('button');
-      msgBtn.id = 'msgBtn';
-      icon = document.createElement('i')
-      icon.classList.add('fas');
-      icon.classList.add('fa-paper-plane'); //fa-arrow-up
-      icon.id = 'sendIcon';
-      msgBtn.append(icon);
-      msgBtn.setAttribute("type", "submit");
-      msgForm.appendChild(msgBtn);
+    user = $('#un').val();
+    document.getElementById('loginContainer').remove();
+    const chat = document.createElement('div');
+    chat.id = 'messages';
+    document.getElementById('main').appendChild(chat);
+    const msgForm = document.createElement('form');
+    msgForm.id = 'msgForm';
+    const msgInput = document.createElement('input');
+    msgInput.placeholder = 'Neue Nachricht';
+    msgInput.id = 'm';
+    msgInput.setAttribute("autocomplete", "off");
+    msgForm.appendChild(msgInput);
+    msgBtn = document.createElement('button');
+    msgBtn.id = 'msgBtn';
+    icon = document.createElement('i')
+    icon.classList.add('fas');
+    icon.classList.add('fa-paper-plane'); //fa-arrow-up
+    icon.id = 'sendIcon';
+    msgBtn.append(icon);
+    msgBtn.setAttribute("type", "submit");
+    msgForm.appendChild(msgBtn);
 
-      document.getElementById('main').appendChild(msgForm);
-      document.getElementById('displayUser').append(user);
+    document.getElementById('main').appendChild(msgForm);
+    document.getElementById('displayUser').append(user);
 
-      $('#msgForm').submit(function (e) {
-        e.preventDefault(); // prevents page reloading
-        if (!$('#m').val()) { return; }
-        socket.emit('chat message', $('#m').val(), uColor, user);
-        createMessage($('#m').val(), 1, uColor, user);
-        $('#m').val('');
-        return false;
-      });
-    }
-  })
+    $('#msgForm').submit(function (e) {
+      e.preventDefault(); // prevents page reloading
+      if (!$('#m').val() || /^\s/.test($('#m').val())) { return; }
+      socket.emit('chat message', $('#m').val(), uColor, user);
+      createMessage($('#m').val(), 1, uColor, user);
+      $('#m').val('');
+      return false;
+    });
+  }
+
 
   socket.on('chat message', function (msg, uColor, uName) {
     createMessage(msg, 0, uColor, uName);
@@ -157,7 +157,7 @@ $(function () {
       //} else {
       onlineUser.append(conClients[i].un);
       userClient.appendChild(onlineUser);
-      if(conClients[i].un === user){
+      if (conClients[i].un === user) {
         youT = document.createElement('i');
         youT.append('(You)');
         youT.style.margin = 'auto 3px';
@@ -172,4 +172,18 @@ $(function () {
     document.getElementById('sidebarHeading').innerHTML = 'Online-' + conClients.length;
     document.getElementById('mySidebar').appendChild(users);
   }
-}); 
+});
+
+function sidebarToggle() {
+  if (toggle === 'closed') {
+    document.getElementById("main").style.marginLeft = "25%";
+    document.getElementById("mySidebar").style.width = "25%";
+    document.getElementById("mySidebar").style.display = "block";
+    toggle = 'opened';
+  } else {
+    document.getElementById("main").style.marginLeft = "0%";
+    document.getElementById("mySidebar").style.display = "none";
+    document.getElementById("openNav").style.display = "inline-block";
+    toggle = 'closed';
+  }
+}
