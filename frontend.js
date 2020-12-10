@@ -2,7 +2,7 @@ $(function () {
   var socket = io();
 
   var user = false;
-  let colors = ['#800000', '#ff0000', '#800080', '#ff00ff', '#ff00ff', '#00ff00', '#808000', '#ffff00', '#000080', '#0000ff', '#008080', '#00ffff', '#ffa500', '#7fffd4', '#8a2be2', '#a52a2a', '#5f9ea0', '#7fff00', '#d2691e', '#ff7f50', '#6495ed', '#b8860b', '#006400', '#bdb76b', '#ff1493', '#1e90ff', '#cd853f', '#a0522d', '#4682b4', '#40e0d0', '#ee82ee', '#9acd32', '#00008B', '8b864e', 'ff7f00', '8b7355', 'b23aee'];
+  let colors = ['#800000', '#ff0000', '#800080', '#ff00ff', '#ff00ff', '#00ff00', '#808000', '#000080', '#0000ff', '#008080', '#00ffff', '#ffa500', '#7fffd4', '#8a2be2', '#a52a2a', '#5f9ea0', '#7fff00', '#d2691e', '#ff7f50', '#6495ed', '#b8860b', '#006400', '#bdb76b', '#ff1493', '#1e90ff', '#cd853f', '#a0522d', '#4682b4', '#40e0d0', '#ee82ee', '#9acd32', '#00008B', '#8b864e', '#ff7f00', '#8b7355', '#b23aee'];
   let uColor = Math.floor(Math.random() * (colors.length));
   $('#login').submit(function (e) {
     if (!$('#un').val()) {

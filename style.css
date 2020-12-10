@@ -229,6 +229,7 @@ form button {
 
 #sidebarHeading {
     color: gray;
+    padding-right: 0;
 }
 
 .userClient {
@@ -249,12 +250,18 @@ form button {
         margin-left: 1px;
         margin-right: 3px;
     }
+    #sidebarHeading{
+        padding-left: 3px;
+    }
 }
 
 @media only screen and (min-width: 451px) {
     .small-UserIcon {
         margin-left: 5px;
         margin-right: 7px;
+    }
+    #sidebarHeading{
+        padding-left: 8px;
     }
 }
 
@@ -263,12 +270,18 @@ form button {
         margin-left: 7px;
         margin-right: 7px;
     }
+    #sidebarHeading{
+        padding-left: 10px;
+    }
 }
 
 @media only screen and (min-width: 768px) {
     .small-UserIcon {
         margin-left: 10px;
         margin-right: 10px;
+    }
+    #sidebarHeading{
+        padding-left: 13px;
     }
 }
 
@@ -283,5 +296,8 @@ form button {
     .small-UserIcon {
         margin-left: 15px;
         margin-right: 15px;
+    }
+    #sidebarHeading{
+        padding-left: 18px;
     }
 }
