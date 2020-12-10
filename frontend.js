@@ -3,15 +3,15 @@ var socket = io();
 var user = false;
 let colors = ['#800000', '#ff0000', '#800080', '#ff00ff', '#ff00ff', '#00ff00', '#808000', '#000080', '#0000ff', '#008080', '#00ffff', '#ffa500', '#7fffd4', '#8a2be2', '#a52a2a', '#5f9ea0', '#7fff00', '#d2691e', '#ff7f50', '#6495ed', '#b8860b', '#006400', '#bdb76b', '#ff1493', '#1e90ff', '#cd853f', '#a0522d', '#4682b4', '#40e0d0', '#ee82ee', '#9acd32', '#00008B', '#8b864e', '#ff7f00', '#8b7355', '#b23aee'];
 let uColor = Math.floor(Math.random() * (colors.length));
-$('#login').submit(function (e) {
-  if (!$('#un').val() || /^\s/.test($('#un').val())) {
+document.getElementById('login').onsubmit = function (e) {
+    if (!document.getElementById('un').value || /^\s/.test(document.getElementById('un').value)) {
     document.getElementById('alertMessage').innerHTML = 'Kein g\u00fcltiger Benutzername!';
     document.getElementById('unAlert').style.display = 'block';
   } else {
-    socket.emit('login', $('#un').val(), uColor);
+    socket.emit('login', document.getElementById('un').value, uColor);
   }
   return false;
-})
+}
 socket.on('checkLogin', function (check) {
   if (check === true) {
     document.getElementById('alertMessage').innerHTML = 'Der Benutzername ist bereits vergeben!';
@@ -20,7 +20,7 @@ socket.on('checkLogin', function (check) {
     document.getElementById('navWrapper').style.display = "flex";
     document.getElementById('unAlert').style.display = 'none';
 
-    user = $('#un').val();
+    user = document.getElementById('un').value;
     document.getElementById('loginContainer').remove();
     const chat = document.createElement('div');
     chat.id = 'messages';
@@ -45,14 +45,14 @@ socket.on('checkLogin', function (check) {
     document.getElementById('main').appendChild(msgForm);
     document.getElementById('displayUser').append(user);
 
-    $('#msgForm').submit(function (e) {
+    document.getElementById('msgForm').onsubmit =function (e) {
       e.preventDefault(); // prevents page reloading
-      if (!$('#m').val() || /^\s/.test($('#m').val())) { return; }
-      socket.emit('chat message', $('#m').val(), uColor, user);
-      createMessage($('#m').val(), 1, uColor, user);
-      $('#m').val('');
+      if (!document.getElementById('m').value || /^\s/.test(document.getElementById('m').value)) { return; }
+      socket.emit('chat message', document.getElementById('m').value, uColor, user);
+      createMessage(document.getElementById('m').value, 1, uColor, user);
+      document.getElementById('m').value = '';
       return false;
-    });
+    };
   }
 
 
@@ -124,18 +124,15 @@ socket.on('checkLogin', function (check) {
   }
 
   function displayOnlineUser(conClients) {
-    //var onlineUser = []
     var oldDiv = document.getElementById('conUsers');
     if (oldDiv) { oldDiv.remove() }
 
     const users = document.createElement('div');
     users.id = 'conUsers';
-    //conClients.sort(); //nochmal überprüfen
     conClients.sort((a, b) => (a.un > b.un) ? 1 : ((b.un > a.un) ? -1 : 0)); //sort Clients
     for (let i = 0; i < conClients.length; i++) {
       userClient = document.createElement('div');
       userClient.classList.add('userClient');
-      //onlineUser.push(document.createElement('p'))
       UserIcon = document.createElement('div');
       UserIcon.style.backgroundColor = colors[conClients[i].color];
       UserIcon.classList.add('UserIcon');
@@ -148,13 +145,7 @@ socket.on('checkLogin', function (check) {
 
       userClient.appendChild(UserIcon);
       onlineUser = document.createElement('p');
-      //onlineUser[i].href = "#"
-      //onlineUser[i].className = "w3-bar-item"
       onlineUser.classList.add('w3-bar-item');
-      //if (conClients[i].un === user) {
-      //  onlineUser[i].append(conClients[i].un + ' (ME)');
-
-      //} else {
       onlineUser.append(conClients[i].un);
       userClient.appendChild(onlineUser);
       if (conClients[i].un === user) {
@@ -163,12 +154,8 @@ socket.on('checkLogin', function (check) {
         youT.style.margin = 'auto 3px';
         userClient.appendChild(youT);
       }
-      //}
       conClients[i].un === user ? users.prepend(userClient) : users.appendChild(userClient);
     }
-    //onlineUser.forEach(element => {
-    //users.appendChild(element);
-    //})
     document.getElementById('sidebarHeading').innerHTML = 'Online-' + conClients.length;
     document.getElementById('mySidebar').appendChild(users);
   }

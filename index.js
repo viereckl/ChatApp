@@ -57,7 +57,7 @@ var io = require('socket.io')(http); //Einbinden von Socket.io mit dem HTTP-Serv
 
 const path = 'messages.json'
 var messages = [];
-if(fs.existsSync(path)){
+if(fs.existsSync(path)){ //Auslesen und speichern von messages.json im messages Array
   fs.readFile(path, function read(err,data){
     if (err){
       throw err;
@@ -69,39 +69,39 @@ if(fs.existsSync(path)){
   })
 }
 
-var conClients = new Set();
-io.on('connection', (socket) => {
-    socket.on('chat message', (msg, uColor, uName) => {
-      socket.broadcast.emit('chat message', msg, uColor,uName); 
-      addMsg(uName, msg);
+var conClients = new Set(); //Erstellen eines Sets für verbundene Clients
+io.on('connection', (socket) => { //Event Handler für Verbindung eines Clients
+    socket.on('chat message', (msg, uColor, uName) => { //Event Handler für das Senden einer Nachricht
+      socket.broadcast.emit('chat message', msg, uColor,uName); //Senden einer Nachricht an alle Clients außer Sender
+      addMsg(uName, msg); //Speichern der gesendeten Nachricht im Speicher
     });
-    socket.on('login', (uName, uColor) => {
+    socket.on('login', (uName, uColor) => { //Login eines Nutzers
       let check = false;
-      conClients.forEach((user) => {
+      conClients.forEach((user) => { //Überprüfen ob der Benutzername schon verwendet wird
         if (user.un === uName) {
           check = true;
         }
       });
-      socket.emit('checkLogin',check)
-      if(check === false){
+      socket.emit('checkLogin',check) //Senden des Rückgabewerts des Logins an den Client
+      if(check === false){ //Wenn der Benutzername noch nicht vergeben ist
         let loginStr = uName + ' logged in!' ;
         console.log(loginStr);
-        socket.broadcast.emit('login message',loginStr);
-        socket.emit('init msg',messages);
-        addMsg('System',loginStr);
-        conClients.add({id: socket.id, un: uName, color: uColor});
-        let conClientsArr = Array.from(conClients);
+        socket.broadcast.emit('login message',loginStr); //Senden der Login Nachricht
+        socket.emit('init msg',messages); //Laden aller Nachrichten aus dem Speicher
+        addMsg('System',loginStr); //Hinzufügen der Systemnachricht zum Speicher
+        conClients.add({id: socket.id, un: uName, color: uColor}); //Hinzufügen des Clients zum Set der verbundenen Clients
+        let conClientsArr = Array.from(conClients); //Konvertieren des Sets in ein Array für die Übergabe
         socket.broadcast.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
-        socket.emit('onlineUser',conClientsArr);
+        socket.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
       }
     });
-    socket.on('disconnect', () => closeCon(socket));
-    socket.on('error', () => closeCon(socket));
+    socket.on('disconnect', () => closeCon(socket));  //Event für Schließen der Verbindung (normal)
+    socket.on('error', () => closeCon(socket));       //Event für Schließen der Verbindung (bei Fehlern)
 }); 
 
-function closeCon(socket){
+function closeCon(socket){  //Funktion um Verbindung zu schließen
   let logoutStr = '';
-  return conClients.forEach((user) => {
+  return conClients.forEach((user) => { //gibt Funktion zurück (Überprüft mit welchem Benutzername der Socket verknüpft war)
     if (user.id === socket.id) {
       logoutStr = user.un + ' logged out!'
       console.log(logoutStr);
@@ -110,12 +110,12 @@ function closeCon(socket){
       conClients.delete(user);
       let conClientsArr = Array.from(conClients);
       socket.broadcast.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
-      socket.emit('onlineUser',conClientsArr);
+      socket.emit('onlineUser',conClientsArr); //Übergabe der angemeldeten Benutzer
     }
   });
 }
 
-function addMsg(pUsername, pMsg){
+function addMsg(pUsername, pMsg){ //Funktion um Nachricht zum Speicherarray hinzuzufügen
   messages.push({
     username: pUsername,
     message: pMsg
@@ -123,7 +123,7 @@ function addMsg(pUsername, pMsg){
   saveChat(messages);
 }
 
-function saveChat(data){
+function saveChat(data){ //Funktion um Speicherarray in Datei zu schreiben
   let jsonData = JSON.stringify(data);
   fs.writeFile('messages.json',jsonData,function(err){
     if(err){
