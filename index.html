@@ -3,17 +3,17 @@
 
 <head>
   <title>Chat App</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://kit.fontawesome.com/dfe3b7396e.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-  <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
+  <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" id="mySidebar">
     <p class="w3-bar-item w3-large" id="sidebarHeading"></p>
   </div>
-  <div id='unAlert' class="w3-panel w3-red w3-display-container w3-round" style='display:none'>
+  <div id='unAlert' class="w3-panel w3-red w3-display-container w3-round">
     <span onclick="this.parentElement.style.display='none'" class="w3-button w3-display-right w3-round">&times;</span>
     <h6 id='alertMessage'></h6>
   </div>
@@ -31,12 +31,9 @@
       </form>
     </div>
   </div>
-  <script>
-    let toggle = 'closed';
-  </script>
 </body>
-
 </html>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="frontend.js"></script>
+<script src="https://kit.fontawesome.com/dfe3b7396e.js" crossorigin="anonymous"></script>
